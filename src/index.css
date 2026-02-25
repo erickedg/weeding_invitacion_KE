@@ -1,0 +1,139 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=Montserrat:wght@300;400;500;600&family=Great+Vibes&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 40 20% 96%;
+    --foreground: 45 15% 25%;
+
+    --card: 40 25% 94%;
+    --card-foreground: 45 15% 25%;
+
+    --popover: 40 20% 96%;
+    --popover-foreground: 45 15% 25%;
+
+    --primary: 65 25% 35%;
+    --primary-foreground: 40 20% 96%;
+
+    --secondary: 40 18% 88%;
+    --secondary-foreground: 45 15% 25%;
+
+    --muted: 40 15% 90%;
+    --muted-foreground: 45 10% 50%;
+
+    --accent: 65 20% 42%;
+    --accent-foreground: 40 20% 96%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 40 15% 85%;
+    --input: 40 15% 85%;
+    --ring: 65 25% 35%;
+
+    --radius: 0.5rem;
+
+    /* Wedding-specific tokens */
+    --wedding-olive: 65 25% 35%;
+    --wedding-olive-light: 65 20% 50%;
+    --wedding-sage: 80 15% 60%;
+    --wedding-cream: 40 30% 95%;
+    --wedding-gold: 38 60% 55%;
+    --wedding-gold-light: 38 50% 70%;
+    --wedding-dark: 45 15% 20%;
+    --wedding-text: 45 10% 40%;
+
+    /* Font families */
+    --font-display: 'Cormorant Garamond', serif;
+    --font-body: 'Montserrat', sans-serif;
+    --font-script: 'Great Vibes', cursive;
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-body);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+  }
+}
+
+@layer components {
+  .font-display {
+    font-family: var(--font-display);
+  }
+
+  .font-body {
+    font-family: var(--font-body);
+  }
+
+  .font-script {
+    font-family: var(--font-script);
+  }
+
+  .wedding-section {
+    @apply py-16 px-6 text-center;
+  }
+
+  .wedding-heading {
+    font-family: var(--font-display);
+    @apply text-3xl md:text-4xl font-light tracking-wider uppercase;
+    color: hsl(var(--primary));
+  }
+
+  .wedding-subheading {
+    font-family: var(--font-display);
+    @apply text-xl md:text-2xl font-light italic;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .wedding-body {
+    font-family: var(--font-body);
+    @apply text-sm md:text-base font-light leading-relaxed;
+    color: hsl(var(--wedding-text));
+  }
+
+  .wedding-divider {
+    @apply w-20 h-px mx-auto my-8;
+    background: hsl(var(--wedding-olive-light));
+  }
+
+  .wedding-card {
+    @apply rounded-lg p-8;
+    background: hsl(var(--wedding-cream));
+    border: 1px solid hsl(var(--border));
+  }
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Hide scrollbar for envelope */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
