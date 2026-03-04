@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import weddingLogo from "@/assets/K_Y_E.png";
 
 interface HeroSectionProps {
   names: string;
@@ -37,23 +38,32 @@ const HeroSection = ({ names, subtitle }: HeroSectionProps) => {
 
         <div className="wedding-divider" />
 
-        <motion.h1
-          className="font-script text-5xl md:text-7xl lg:text-8xl mb-4"
-          style={{ color: "hsl(var(--primary))" }}
+        <motion.img
+          src={weddingLogo}
+          alt={names}
+          className="w-64 md:w-80 lg:w-96 mx-auto my-4"
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 1, duration: 1 }}
-        >
-          {names}
-        </motion.h1>
+        />
 
         <div className="wedding-divider" />
+
+        <motion.p
+          className="font-display text-lg md:text-xl tracking-[0.25em] uppercase font-light"
+          style={{ color: "hsl(var(--wedding-olive-light))" }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.2, duration: 0.8 }}
+        >
+          Katia & Erick
+        </motion.p>
 
         <motion.p
           className="wedding-body text-xs tracking-[0.3em] uppercase mt-6"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.3, duration: 0.8 }}
+          transition={{ delay: 1.5, duration: 0.8 }}
         >
           Los invitamos a acompañarnos en este día tan especial
         </motion.p>

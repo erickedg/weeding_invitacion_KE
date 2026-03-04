@@ -20,7 +20,7 @@ import WeddingFooter from "@/components/wedding/WeddingFooter";
 
 const WEDDING_CONFIG = {
   // Nombres de los novios
-  names: "Novia & Novio",
+  names: "Katia & Erick",
 
   // Fecha de la boda (año, mes (0-indexed), día, hora, minuto)
   date: new Date(2026, 9, 9, 16, 30), // 9 de octubre de 2026
