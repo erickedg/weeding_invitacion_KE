@@ -9,8 +9,7 @@ import Itinerary from "@/components/wedding/Itinerary";
 import DressCode from "@/components/wedding/DressCode";
 import GiftInfo from "@/components/wedding/GiftInfo";
 import OurStory from "@/components/wedding/OurStory";
-import Accommodation from "@/components/wedding/Accommodation";
-import PhotoShare from "@/components/wedding/PhotoShare";
+// import Accommodation from "@/components/wedding/Accommodation";
 import RSVPSection from "@/components/wedding/RSVPSection";
 import WeddingFooter from "@/components/wedding/WeddingFooter";
 
@@ -29,7 +28,7 @@ const WEDDING_CONFIG = {
   dateFormatted: "09 · 10 · 2026",
 
   // Subtítulo del hero
-  subtitle: "En el plan perfecto de Dios, nuestras vidas se encontraron",
+  // subtitle: "En el plan perfecto de Dios, nuestras vidas se encontraron",
 
   // Ceremonia
   ceremony: {
@@ -43,8 +42,8 @@ const WEDDING_CONFIG = {
   reception: {
     title: "Recepción",
     time: "7:30 PM",
-    venue: "Salón (por definir)",
-    mapUrl: "#",
+    venue: "Jardín (Hacienda Flor de Nogal)",
+    mapUrl: "https://maps.app.goo.gl/Mn8qtibT4AVPoWmn9",
   },
 
   // Itinerario
@@ -64,7 +63,7 @@ const WEDDING_CONFIG = {
   },
 
   // Álbum de fotos
-  albumUrl: "#",
+  // lbumUrl: "#",
 
   // RSVP
   rsvpDeadline: "1 de septiembre de 2026",
@@ -111,12 +110,10 @@ const Index = () => {
 
           <OurStory story={WEDDING_CONFIG.story} />
 
-          <Accommodation
+          {/* <Accommodation
             hotelName={WEDDING_CONFIG.hotel.name}
             hotelUrl={WEDDING_CONFIG.hotel.url}
-          />
-
-          <PhotoShare albumUrl={WEDDING_CONFIG.albumUrl} />
+          /> */}
 
           <RSVPSection
             deadline={WEDDING_CONFIG.rsvpDeadline}

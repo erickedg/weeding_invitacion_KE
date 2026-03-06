@@ -19,7 +19,7 @@ const Itinerary = ({ items }: ItineraryProps) => {
         viewport={{ once: true }}
         className="max-w-sm mx-auto"
       >
-        <h2 className="wedding-heading text-2xl mb-8">Itinerario</h2>
+        <h2 className="font-brittany text-3xl mb-8 tracking-[0.1em]">Itinerario</h2>
         <div className="wedding-divider" />
 
         <div className="relative mt-10">

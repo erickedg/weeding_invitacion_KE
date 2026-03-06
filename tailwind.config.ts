@@ -69,7 +69,7 @@ export default {
         },
       },
       fontFamily: {
-        display: ["Cormorant Garamond", "serif"],
+        display: ["Cormorant Garamond", "serif", "Bonami", "Brittany"],
         body: ["Montserrat", "sans-serif"],
         script: ["Great Vibes", "cursive"],
       },
@@ -111,3 +111,4 @@ export default {
   },
   plugins: [require("tailwindcss-animate")],
 } satisfies Config;
+

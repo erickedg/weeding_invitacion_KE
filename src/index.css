@@ -137,3 +137,31 @@ html {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+@font-face {
+  font-family: 'Bonami';
+  /* Ajusta la ruta y el nombre exacto de tu archivo */
+  src: url('./assets/fonts/Bonami.ttf') format('opentype'); 
+  /* Si es .woff2 usa format('woff2'), si es .ttf usa format('truetype') */
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* Opcional: Define una clase base si quieres */
+.font-bonami {
+  font-family: 'Bonami', serif;
+}
+
+@font-face {
+  font-family: 'Brittany';
+  /* Ajusta la ruta y el nombre exacto de tu archivo */
+  src: url('./assets/fonts/Brittany.otf') format('opentype'); 
+  /* Si es .woff2 usa format('woff2'), si es .ttf usa format('truetype') */
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* Opcional: Define una clase base si quieres */
+.font-brittany {
+  font-family: 'Brittany', serif;
+}

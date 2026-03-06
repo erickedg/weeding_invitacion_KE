@@ -19,7 +19,7 @@ const WeddingFooter = ({ names, date }: WeddingFooterProps) => {
 
         <div className="wedding-divider" />
 
-        <h3 className="font-script text-4xl mt-6" style={{ color: "hsl(var(--primary))" }}>
+        <h3 className="font-brittany text-4xl mt-6" style={{ color: "hsl(var(--primary))" }}>
           {names}
         </h3>
         <p className="font-body text-xs tracking-[0.3em] uppercase mt-4" style={{ color: "hsl(var(--muted-foreground))" }}>

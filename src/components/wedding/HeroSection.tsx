@@ -1,6 +1,9 @@
 import { motion } from "framer-motion";
 import weddingLogo from "@/assets/K_Y_E.png";
 
+// IMPORTA TU IMAGEN DE FONDO AQUÍ
+import heroBg from "@/assets/Foto_10.jpg"; 
+
 interface HeroSectionProps {
   names: string;
   subtitle?: string;
@@ -8,50 +11,56 @@ interface HeroSectionProps {
 
 const HeroSection = ({ names, subtitle }: HeroSectionProps) => {
   return (
-    <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden bg-background">
-      {/* Background decorative elements */}
-      <div className="absolute inset-0 opacity-5">
-        <div
-          className="absolute top-10 left-10 w-40 h-40 rounded-full blur-3xl"
-          style={{ backgroundColor: "hsl(var(--wedding-sage))" }}
+    // CAMBIO 1: 'justify-end' para bajar todo el contenido.
+    // 'pb-0' porque controlaremos el espacio con padding interno del div
+    <section className="relative min-h-screen flex flex-col items-center justify-end overflow-hidden">
+      
+      {/* --- INICIO DEL FONDO --- */}
+      <div className="absolute inset-0 z-0">
+        <img 
+          src={heroBg} 
+          alt="Fondo Boda" 
+          // Mantenemos tu ajuste de posición
+          className="w-full h-full object-cover object-[center_30%]"
         />
+        
+        {/* CAMBIO 2: DEGRADADO BLANCO DESDE ABAJO (FADE) */}
+        {/* Esto es crucial: crea la "niebla" blanca abajo para que el logo se lea bien */}
+        {/* 'from-background' es el color de tu fondo (blanco/crema), 'to-transparent' hace que arriba se vea la foto */}
+        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent h-[60%] mt-auto" />
+      </div>
+      {/* --- FIN DEL FONDO --- */}
+
+      {/* Elementos decorativos (opcional) - Los mantenemos sutiles */}
+      <div className="absolute inset-0 opacity-20 pointer-events-none mix-blend-overlay">
         <div
-          className="absolute bottom-20 right-10 w-60 h-60 rounded-full blur-3xl"
-          style={{ backgroundColor: "hsl(var(--wedding-olive-light))" }}
+          className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[500px] h-[300px] rounded-full blur-3xl"
+          style={{ backgroundColor: "white" }} 
         />
       </div>
 
       <motion.div
-        className="relative z-10 text-center px-6"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
+        // CAMBIO 3: Padding inferior grande (pb-32 md:pb-40) para subir el logo desde el borde
+        className="relative z-10 text-center px-6 pb-32 md:pb-40"
+        initial={{ opacity: 0, y: 50 }} 
+        animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1.2, delay: 0.5 }}
       >
-        <motion.p
-          className="wedding-body text-xs tracking-[0.4em] uppercase mb-6"
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.8, duration: 0.8 }}
-        >
-          {subtitle || "En el plan perfecto de Dios, nuestras vidas se encontraron"}
-        </motion.p>
-
-        <div className="wedding-divider" />
-
-        <motion.img
+        {/* <motion.img
           src={weddingLogo}
           alt={names}
           className="w-64 md:w-80 lg:w-96 mx-auto my-4"
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 1, duration: 1 }}
-        />
+        /> */}
 
-        <div className="wedding-divider" />
+        {/* Divider inferior (opcional, lo dejo por si te gusta) */}
+        {/* <div className="h-px w-16 bg-wedding-olive-light mx-auto my-4 opacity-50" /> */}
 
         <motion.p
-          className="font-display text-lg md:text-xl tracking-[0.25em] uppercase font-light"
-          style={{ color: "hsl(var(--wedding-olive-light))" }}
+          className="font-display text-6xl tracking-[0.1em] mt-4 font-medium"
+          style={{ color: "hsl(var(--wedding-olive-light))" }} // Usa un color oscuro para que contraste con el degradado blanco
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.2, duration: 0.8 }}
@@ -59,24 +68,20 @@ const HeroSection = ({ names, subtitle }: HeroSectionProps) => {
           Katia & Erick
         </motion.p>
 
-        <motion.p
-          className="wedding-body text-xs tracking-[0.3em] uppercase mt-6"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.5, duration: 0.8 }}
-        >
-          Los invitamos a acompañarnos en este día tan especial
-        </motion.p>
+        {/* NOTA: He quitado el texto de "Los invitamos..." de aquí.
+            Ahora debes poner ese texto manualmente al principio de tu siguiente componente (CountdownTimer o SaveTheDate) 
+            para que aparezca sobre el fondo blanco limpio. */}
       </motion.div>
 
       {/* Scroll indicator */}
       <motion.div
-        className="absolute bottom-8 flex flex-col items-center"
+        className="absolute bottom-8 flex flex-col items-center z-20 opacity-60"
         animate={{ y: [0, 8, 0] }}
         transition={{ duration: 2, repeat: Infinity }}
       >
-        <div className="w-px h-12" style={{ backgroundColor: "hsl(var(--wedding-olive-light))" }} />
-        <span className="wedding-body text-[10px] tracking-widest uppercase mt-2">Scroll</span>
+        {/* Cambié el color a negro/gris porque ahora está sobre el degradado blanco */}
+        <div className="w-px h-12 bg-gray-500" />
+        <span className="wedding-body text-[10px] tracking-widest uppercase mt-2 text-gray-500">Scroll</span>
       </motion.div>
     </section>
   );

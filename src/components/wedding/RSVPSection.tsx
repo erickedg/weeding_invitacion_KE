@@ -20,7 +20,7 @@ const RSVPSection = ({ deadline, confirmUrl }: RSVPSectionProps) => {
         viewport={{ once: true }}
         className="max-w-md mx-auto relative z-10"
       >
-        <h2 className="wedding-heading text-2xl mb-4">Confirmar asistencia</h2>
+        <h2 className="wedding-heading text-2xl mb-4 font-medium">Confirmar asistencia</h2>
         <div className="wedding-divider" />
 
         <p className="wedding-body text-sm mt-6 mb-8">
