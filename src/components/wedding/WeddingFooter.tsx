@@ -7,22 +7,28 @@ interface WeddingFooterProps {
 
 const WeddingFooter = ({ names, date }: WeddingFooterProps) => {
   return (
-    <footer className="wedding-section py-20" style={{ backgroundColor: "hsl(var(--wedding-cream))" }}>
+    // CAMBIO: Quitamos el estilo inline de wedding-cream y ponemos 'bg-white'
+    // También puedes usar bg-background si tu fondo por defecto es blanco
+    <footer className="wedding-section py-20 bg-white text-center">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
+        className="max-w-2xl mx-auto px-4" // Añadí un contenedor para centrar y dar margen
       >
-        <p className="wedding-body text-sm mb-6">
+        <p className="wedding-body text-sm mb-8 text-gray-600">
           Gracias por ser parte de este capítulo tan importante en nuestra historia.
         </p>
 
-        <div className="wedding-divider" />
+        {/* Divider sutil */}
+        <div className="w-16 h-px bg-wedding-olive-light mx-auto opacity-50 mb-8" />
 
-        <h3 className="font-brittany text-4xl mt-6" style={{ color: "hsl(var(--primary))" }}>
+        {/* Nombres con tipografía tipo firma (Brittany o similar) */}
+        <h3 className="font-brittany text-3xl md:text-3xl text-wedding-olive-dark">
           {names}
         </h3>
-        <p className="font-body text-xs tracking-[0.3em] uppercase mt-4" style={{ color: "hsl(var(--muted-foreground))" }}>
+        
+        <p className="font-body text-xs tracking-[0.3em] uppercase mt-4 text-gray-500">
           {date}
         </p>
       </motion.div>

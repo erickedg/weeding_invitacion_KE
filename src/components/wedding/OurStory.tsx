@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 
 // 1. IMPORTAMOS LA IMAGEN QUE QUIERES USAR DE FONDO
 // Puedes cambiar 'Foto_1.jpg' por la que mejor se vea en formato horizontal
-import storyBanner from "@/assets/Foto_9.jpg"; 
+import storyBanner from "@/assets/Foto_7.jpg"; 
 
 interface OurStoryProps {
   story?: string;

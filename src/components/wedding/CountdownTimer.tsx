@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import weddingLogo from "@/assets/K_Y_E.png";
+
 interface CountdownTimerProps {
   targetDate: Date;
   names: string;
@@ -45,17 +45,10 @@ const CountdownTimer = ({ names,  targetDate }: CountdownTimerProps) => {
             Los invitamos a acompañarnos en este día tan especial
           </p>
         </div> */}
-        <motion.img
-          src={weddingLogo}
-          alt={names}
-          className="w-64 md:w-80 lg:w-96 mx-auto my-4"
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 1, duration: 1 }}
-        />
-        {/* <p className="font-brittany text-4xl tracking-[0.0em] mb-2" style={{ color: "hsl(var(--wedding-olive-light))" }}>
+        
+        <p className="font-brittany text-4xl tracking-[0.0em] mb-2" style={{ color: "hsl(var(--wedding-olive-light))" }}>
           Save The Date
-        </p> */}
+        </p>
         <div className="wedding-divider" />
 
         <div className="flex justify-center gap-6 md:gap-10 mt-10">
