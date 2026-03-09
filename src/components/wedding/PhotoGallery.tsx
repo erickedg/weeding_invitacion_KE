@@ -3,8 +3,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react"; 
 
 // Importamos las imágenes
-import foto1 from "../../assets/Foto_2.jpg";
-import foto2 from "../../assets/Foto_5.jpg";
+import foto1 from "../../assets/Foto_13.jpg";
+import foto2 from "../../assets/Foto_12.jpg";
 import foto3 from "../../assets/Foto_4.jpg";
 import foto4 from "../../assets/Foto_3.jpg";
 import foto5 from "../../assets/Foto_1.jpg";

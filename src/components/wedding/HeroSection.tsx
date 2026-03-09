@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import heroBg1 from "@/assets/Foto_11.jpg"; 
 import heroBg2 from "@/assets/Foto_10.jpg"; 
-import weddingLogo from "@/assets/K_Y_E.png";
+import weddingLogo from "@/assets/K_Y_E_2.png";
 
 interface HeroSectionProps {
   names: string;

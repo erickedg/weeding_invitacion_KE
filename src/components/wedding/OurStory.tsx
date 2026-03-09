@@ -54,12 +54,12 @@ const OurStory = ({ story }: OurStoryProps) => {
           transition={{ duration: 0.8, delay: 0.2 }}
           className="max-w-3xl mx-auto text-center relative z-10"
         >
-          <h2 className="font-display text-2xl md:text-3xl mb-8 text-gray-800 tracking-widest uppercase">
+          {/* <h2 className="font-display text-2xl md:text-3xl mb-8 text-gray-800 tracking-widest uppercase">
             Nuestra Historia
-          </h2>
+          </h2> */}
 
           <p className="wedding-body text-sm md:text-lg leading-relaxed text-gray-600 px-4 font-light">
-            {story || "Todo comenzó sin imaginar que ese sería el primer capítulo de nuestra historia. Hoy, con el corazón lleno de gratitud, estamos listos para escribir nuestro…"}
+            {story || "De todas las decisiones que hemos tomado juntos, la más importante ha sido elegirnos el uno al otro. Desde la primera cita, supimos que estábamos destinados a compartir nuestras vidas. Cada momento, cada risa y cada desafío nos han fortalecido y nos han llevado a este hermoso capítulo que estamos a punto de escribir juntos."}
           </p>
 
           <div className="w-16 h-px bg-wedding-olive-light mx-auto my-8 opacity-60" />

@@ -39,7 +39,7 @@ const RSVPSection = ({ deadline, confirmUrl }: RSVPSectionProps) => {
           <div className="h-px w-16 bg-wedding-olive-light mx-auto mb-10 opacity-60" />
 
           <p className="wedding-body text-sm md:text-lg leading-relaxed text-gray-700 mb-10 max-w-md mx-auto px-4">
-            Tu presencia haría nuestro día aún más especial. Por favor, confírmanos antes del <span className="font-medium">{deadline}</span>.
+            Será un encuentro íntimo con las personas que más queremos. Por favor, confírmanos antes del <span className="font-medium">{deadline}</span>.
           </p>
         </ScrollReveal>
 

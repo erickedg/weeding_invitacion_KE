@@ -74,7 +74,7 @@ const DressCode = () => {
           <div className="mt-10 px-4 py-4 bg-gray-50 rounded-md inline-block">
             <p className="wedding-body text-xs md:text-sm italic text-gray-500">
               <span className="font-medium text-wedding-olive-dark not-italic mr-1">Nota:</span>
-              Reservamos los colores blanco y verde para la novia y damas de honor.
+              Reservamos los colores blanco y verde para la novia y el novio.
             </p>
           </div>
           
