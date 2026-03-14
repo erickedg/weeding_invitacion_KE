@@ -3,20 +3,13 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Heart, X } from "lucide-react";
 import { ScrollReveal } from "../ui/ScrollReveal";
 
-// Simulación de tu base de datos JSON (deberías importarla de tu archivo real)
-// import guestsDb from "../lib/guests.json";
-const guestsDb: Record<string, { name: string; allowed: number }> = {
-  "A1B2": { name: "Erick y Acompañante", allowed: 2 },
-  "X9Y8": { name: "Juan Pérez", allowed: 1 },
-};
-
-// Reemplaza esto con los links "Embed" de tus formularios de Tally
+// Tus links de Tally
 const TALLY_FORM_1 = "https://tally.so/r/Gx1Noe";
 const TALLY_FORM_2 = "https://tally.so/r/yPyK08";
 
 interface RSVPSectionProps {
   deadline: string;
-  confirmUrl?: string; // Lo mantenemos por si acaso hay un link de respaldo
+  confirmUrl?: string;
 }
 
 const RSVPSection = ({ deadline, confirmUrl }: RSVPSectionProps) => {
@@ -28,18 +21,32 @@ const RSVPSection = ({ deadline, confirmUrl }: RSVPSectionProps) => {
   
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // Al cargar la página, leemos la URL: tusitio.com/?id=A1B2
+  // Al cargar la página, leemos la URL y consultamos a nuestra API de Vercel de forma segura
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const id = params.get("id");
+    const fetchGuest = async () => {
+      const params = new URLSearchParams(window.location.search);
+      const id = params.get("id");
 
-    if (id && guestsDb[id]) {
-      setGuestInfo({
-        id: id,
-        name: guestsDb[id].name,
-        allowed: guestsDb[id].allowed,
-      });
-    }
+      if (!id) return; // Si no hay ID, no hacemos la petición
+
+      try {
+        // Le preguntamos al "mini-backend" por este ID en específico
+        const response = await fetch(`/api/guest?id=${id}`);
+        
+        if (response.ok) {
+          const data = await response.json();
+          setGuestInfo({
+            id: id,
+            name: data.name,
+            allowed: data.allowed,
+          });
+        }
+      } catch (error) {
+        console.error("Error validando el invitado", error);
+      }
+    };
+
+    fetchGuest();
   }, []);
 
   const getTallyUrl = () => {
@@ -50,10 +57,9 @@ const RSVPSection = ({ deadline, confirmUrl }: RSVPSectionProps) => {
     const url = new URL(baseUrl);
     
     // PREFILL: Aquí pasamos los datos a Tally. 
-    // OJO: "nombre" e "id_invitado" deben coincidir con los "keys" en tu Tally
     url.searchParams.set("nombre", guestInfo.name);
     url.searchParams.set("id_invitado", guestInfo.id);
-    url.searchParams.set("transparentBackground", "1"); // Hace que Tally se vea mejor embebido
+    url.searchParams.set("transparentBackground", "1");
 
     return url.toString();
   };
@@ -122,7 +128,6 @@ const RSVPSection = ({ deadline, confirmUrl }: RSVPSectionProps) => {
               transition={{ duration: 2, repeat: Infinity }}
             />
             
-            {/* Cambiamos <a> por <button> para abrir el modal */}
             <motion.button
               onClick={handleConfirmClick}
               className="relative z-10 inline-block font-display text-xs tracking-[0.25em] uppercase px-12 py-5 rounded-sm shadow-xl transition-all border-none cursor-pointer"
@@ -156,7 +161,7 @@ const RSVPSection = ({ deadline, confirmUrl }: RSVPSectionProps) => {
               initial={{ scale: 0.95, opacity: 0, y: 20 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.95, opacity: 0, y: 20 }}
-              className="relative w-full max-w-3xl h-[85vh] bg-[#f9f9f9] rounded-xl shadow-2xl overflow-hidden flex flex-col"
+              className="relative w-full max-w-md h-[65vh] sm:h-[500px] bg-[#f9f9f9] rounded-xl shadow-2xl overflow-hidden flex flex-col"
             >
               {/* Header del Modal */}
               <div className="flex items-center justify-between px-6 py-4 bg-white border-b border-gray-100">
