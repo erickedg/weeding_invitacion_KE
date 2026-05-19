@@ -21,8 +21,8 @@ const WEDDING_CONFIG = {
   ceremony: {
     title: "Ceremonia",
     time: "4:30 PM",
-    venue: "Iglesia (por definir)",
-    mapUrl: "#",
+    venue: "Iglesia (Parroquia El Señor de la Misericordia)",
+    mapUrl: "https://maps.app.goo.gl/DoFad2Vt6b7A1vm87",
   },
   reception: {
     title: "Recepción",
@@ -32,11 +32,11 @@ const WEDDING_CONFIG = {
   },
   itinerary: [
     { time: "4:30 PM", event: "Ceremonia Religiosa", icon: "⛪" },
-    { time: "5:30 PM", event: "Sesión de Fotos", icon: "📸" },
-    { time: "6:30 PM", event: "Cóctel de Bienvenida", icon: "🥂" },
-    { time: "7:30 PM", event: "Recepción", icon: "🎉" },
-    { time: "8:30 PM", event: "Cena", icon: "🍽️" },
-    { time: "10:00 PM", event: "Fiesta & Baile", icon: "💃" },
+    { time: "8:00 PM", event: "Sesión de Fotos", icon: "📸" },
+    { time: "9:00 PM", event: "Cóctel de Bienvenida", icon: "🥂" },
+    { time: "10:00 PM", event: "Recepción", icon: "🎉" },
+    { time: "11:00 PM", event: "Cena", icon: "🍽️" },
+    { time: "12:00 PM", event: "Fiesta & Baile", icon: "💃" },
   ],
   hotel: { name: "Hotel (por definir)", url: "#" },
   rsvpDeadline: "1 de septiembre de 2026",
