@@ -45,10 +45,12 @@ const Itinerary = ({ items }: ItineraryProps) => {
             >
               {/* LADO IZQUIERDO (Texto si es par, vacío si es impar) */}
               <div className={`flex-1 ${i % 2 === 0 ? "text-right pr-4" : "order-3 text-left pl-4"}`}>
-                <p className="font-display text-lg font-medium" style={{ color: "hsl(var(--primary))" }}>
+                <p className="font-display text-xm font-bold" style={{ color: "hsl(var(--primary))" }}>
                   {item.time}
                 </p>
-                <p className="wedding-body text-xs opacity-80 mt-1">{item.event}</p>
+                <p className="font-display text-xm font-medium mt-2" style={{ color: "hsl(var(--wedding-olive-light))" }}>
+                  {item.event}
+                </p>
               </div>
 
               {/* PUNTO CENTRAL VERDE SÓLIDO */}

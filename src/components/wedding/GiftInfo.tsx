@@ -64,7 +64,7 @@ const GiftInfo = () => {
               
               <div className="bg-wedding-cream/50 p-3 rounded-lg">
                 <p className="text-xs uppercase tracking-wider text-wedding-olive-dark/70 mb-1">Titular</p>
-                <p className="font-medium">Katia & Erick</p>
+                <p className="font-medium">Erick Edgardo Calamaco Reza</p>
               </div>
               
               <div className="bg-wedding-cream/50 p-3 rounded-lg">

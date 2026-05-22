@@ -4,6 +4,7 @@
 const guestsDb = {
   "A1B2": { name: "Erick y Acompañante", allowed: 2 },
   "X9Y8": { name: "Juan Pérez", allowed: 1 },
+  "X9Y7": { name: "Familia Leal Astorga", allowed: 5 },
 };
 
 export default function handler(req, res) {

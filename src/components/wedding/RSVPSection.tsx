@@ -6,6 +6,7 @@ import { ScrollReveal } from "../ui/ScrollReveal";
 // Tus links de Tally
 const TALLY_FORM_1 = "https://tally.so/r/Gx1Noe";
 const TALLY_FORM_2 = "https://tally.so/r/yPyK08";
+const TALLY_FORM_3 = "https://tally.so/r/b56e0L";
 
 interface RSVPSectionProps {
   deadline: string;
@@ -53,7 +54,10 @@ const RSVPSection = ({ deadline, confirmUrl }: RSVPSectionProps) => {
     if (!guestInfo) return confirmUrl || "";
     
     // Elegimos el formulario correcto según los pases
-    const baseUrl = guestInfo.allowed === 2 ? TALLY_FORM_2 : TALLY_FORM_1;
+    const baseUrl =
+      guestInfo.allowed === 5 ? TALLY_FORM_3 :
+      guestInfo.allowed === 2 ? TALLY_FORM_2 :
+      TALLY_FORM_1;
     const url = new URL(baseUrl);
     
     // PREFILL: Aquí pasamos los datos a Tally. 
@@ -112,7 +116,7 @@ const RSVPSection = ({ deadline, confirmUrl }: RSVPSectionProps) => {
 
           {/* MENSAJE PERSONALIZADO SI SE DETECTA EL INVITADO */}
           {guestInfo && (
-            <div className="mb-10 text-wedding-olive-dark font-medium">
+            <div className="mb-10 text-wedding-olive-dark font-medium text-center">
               Hola <span className="font-bold">{guestInfo.name}</span>, tu invitación es válida para {guestInfo.allowed} {guestInfo.allowed === 1 ? "persona" : "personas"}.
             </div>
           )}
@@ -161,12 +165,13 @@ const RSVPSection = ({ deadline, confirmUrl }: RSVPSectionProps) => {
               initial={{ scale: 0.95, opacity: 0, y: 20 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.95, opacity: 0, y: 20 }}
-              className="relative w-full max-w-md h-[65vh] sm:h-[500px] bg-[#f9f9f9] rounded-xl shadow-2xl overflow-hidden flex flex-col"
+              className="relative w-full max-w-lg h-[90vh] sm:h-[750px] bg-[#f9f9f9] rounded-xl shadow-2xl overflow-hidden flex flex-col"
             >
               {/* Header del Modal */}
-              <div className="flex items-center justify-between px-6 py-4 bg-white border-b border-gray-100">
-                <h3 className="font-display text-xs tracking-[0.2em] uppercase text-wedding-olive-dark">
-                  Confirmación de Asistencia
+              <div className="flex items-center px-6 py-4 bg-white border-b border-gray-100">
+                <div className="w-8" />
+                <h3 className="flex-1 text-center font-display text-xs tracking-[0.2em] uppercase text-wedding-olive-dark">
+                  Confirmación de Asistenciaño 
                 </h3>
                 <button
                   onClick={() => setIsModalOpen(false)}

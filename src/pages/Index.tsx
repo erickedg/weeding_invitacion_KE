@@ -1,18 +1,24 @@
-import { useState } from "react";
+import { useState, useEffect, lazy, Suspense } from "react";
 import EnvelopeOpener from "@/components/wedding/EnvelopeOpener";
 import HeroSection from "@/components/wedding/HeroSection";
-import CountdownTimer from "@/components/wedding/CountdownTimer";
-import PhotoGallery from "@/components/wedding/PhotoGallery";
-import WeddingCalendar from "@/components/wedding/WeddingCalendar";
-import CeremonyReception from "@/components/wedding/CeremonyReception";
-import Itinerary from "@/components/wedding/Itinerary";
-import DressCode from "@/components/wedding/DressCode";
-import GiftInfo from "@/components/wedding/GiftInfo";
-import OurStory from "@/components/wedding/OurStory";
-import RSVPSection from "@/components/wedding/RSVPSection";
-import WeddingFooter from "@/components/wedding/WeddingFooter";
-import { ScrollReveal } from "@/components/ui/ScrollReveal"; // IMPORTAMOS TU NUEVO COMPONENTE
-import BackgroundMusic from "@/components/ui/BackgroundMusic";
+import { ScrollReveal } from "@/components/ui/ScrollReveal";
+
+// Imágenes del hero para precargarlas mientras el usuario ve el sobre
+import heroBg1 from "@/assets/Foto_11.webp";
+import heroBg2 from "@/assets/Foto_10.webp";
+
+// Lazy: se descargan en segundo plano, no bloquean la carga inicial
+const BackgroundMusic = lazy(() => import("@/components/ui/BackgroundMusic"));
+const CountdownTimer = lazy(() => import("@/components/wedding/CountdownTimer"));
+const PhotoGallery = lazy(() => import("@/components/wedding/PhotoGallery"));
+const WeddingCalendar = lazy(() => import("@/components/wedding/WeddingCalendar"));
+const CeremonyReception = lazy(() => import("@/components/wedding/CeremonyReception"));
+const Itinerary = lazy(() => import("@/components/wedding/Itinerary"));
+const DressCode = lazy(() => import("@/components/wedding/DressCode"));
+const GiftInfo = lazy(() => import("@/components/wedding/GiftInfo"));
+const OurStory = lazy(() => import("@/components/wedding/OurStory"));
+const RSVPSection = lazy(() => import("@/components/wedding/RSVPSection"));
+const WeddingFooter = lazy(() => import("@/components/wedding/WeddingFooter"));
 
 const WEDDING_CONFIG = {
   names: "Katia & Erick",
@@ -31,12 +37,13 @@ const WEDDING_CONFIG = {
     mapUrl: "https://maps.app.goo.gl/Mn8qtibT4AVPoWmn9",
   },
   itinerary: [
-    { time: "4:30 PM", event: "Ceremonia Religiosa", icon: "⛪" },
-    { time: "8:00 PM", event: "Sesión de Fotos", icon: "📸" },
-    { time: "9:00 PM", event: "Cóctel de Bienvenida", icon: "🥂" },
-    { time: "10:00 PM", event: "Recepción", icon: "🎉" },
-    { time: "11:00 PM", event: "Cena", icon: "🍽️" },
-    { time: "12:00 PM", event: "Fiesta & Baile", icon: "💃" },
+    { time: "4:30 p.m.", event: "Ceremonia religiosa", icon: "💒" },
+    { time: "5:30 p.m.", event: "Sesión de fotos familiar", icon: "📸" },
+    { time: "7:30 p.m.", event: "Recepción de invitados", icon: "🥂" },
+    { time: "8:00 p.m.", event: "Cena", icon: "🍽️" },
+    { time: "9:00 p.m.", event: "Inicio de la fiesta", icon: "🎉" },
+    { time: "9:00 p.m.", event: "Baile y celebración", icon: "💃" },
+    { time: "1:00 a.m.", event: "Fin del evento", icon: "🌙" },
   ],
   hotel: { name: "Hotel (por definir)", url: "#" },
   rsvpDeadline: "1 de septiembre de 2026",
@@ -46,6 +53,23 @@ const WEDDING_CONFIG = {
 
 const Index = () => {
   const [isEnvelopeOpen, setIsEnvelopeOpen] = useState(false);
+
+  // Precarga imágenes y chunks de JS mientras el usuario ve el sobre
+  useEffect(() => {
+    [heroBg1, heroBg2].forEach((src) => { new Image().src = src; });
+
+    import("@/components/ui/BackgroundMusic");
+    import("@/components/wedding/CountdownTimer");
+    import("@/components/wedding/PhotoGallery");
+    import("@/components/wedding/WeddingCalendar");
+    import("@/components/wedding/CeremonyReception");
+    import("@/components/wedding/Itinerary");
+    import("@/components/wedding/DressCode");
+    import("@/components/wedding/GiftInfo");
+    import("@/components/wedding/OurStory");
+    import("@/components/wedding/RSVPSection");
+    import("@/components/wedding/WeddingFooter");
+  }, []);
 
   return (
     <div className="min-h-screen bg-background overflow-x-hidden no-scrollbar">
@@ -58,13 +82,11 @@ const Index = () => {
       {/* resto de tu app */}
       </>
       {isEnvelopeOpen && (
-        <>
-          {/* MÚSICA: Aparece y suena automáticamente al abrir el sobre */}
-          <BackgroundMusic 
-            src="/music/Harritocominguprosesvoz.MP3" 
-            volume={0.15} 
+        <Suspense fallback={null}>
+          <BackgroundMusic
+            src="/music/Harritocominguprosesvoz.MP3"
+            volume={0.15}
           />
-          {/* El Hero aparece de inmediato al abrir el sobre, no necesita ScrollReveal */}
           <HeroSection
             names={WEDDING_CONFIG.names}
             subtitle={WEDDING_CONFIG.subtitle}
@@ -89,7 +111,6 @@ const Index = () => {
             />
           </ScrollReveal>
 
-          {/* El itinerario ya tiene animaciones internas, pero lo envolvemos para el título */}
           <ScrollReveal width="100%">
             <Itinerary items={WEDDING_CONFIG.itinerary} />
           </ScrollReveal>
@@ -119,7 +140,7 @@ const Index = () => {
               date={WEDDING_CONFIG.dateFormatted}
             />
           </ScrollReveal>
-        </>
+        </Suspense>
       )}
     </div>
   );
