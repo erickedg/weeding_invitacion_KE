@@ -12,6 +12,7 @@ interface GuestInfo {
 interface RSVPSectionProps {
   deadline: string;
   confirmUrl?: string;
+  preloadedGuest?: GuestInfo | null;
 }
 
 const stepAnim = {
@@ -357,14 +358,16 @@ function FamilyRSVP({
 
 // ─── Componente principal ─────────────────────────────────────────────────────
 
-const RSVPSection = ({ deadline, confirmUrl }: RSVPSectionProps) => {
-  const [guestInfo, setGuestInfo] = useState<GuestInfo | null>(null);
+const RSVPSection = ({ deadline, confirmUrl, preloadedGuest }: RSVPSectionProps) => {
+  const [guestInfo, setGuestInfo] = useState<GuestInfo | null>(preloadedGuest ?? null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [step, setStep] = useState<"main" | "success" | "declined">("main");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
 
   useEffect(() => {
+    if (preloadedGuest) return; // ya tenemos los datos, no hacer fetch
+
     const fetchGuest = async () => {
       const params = new URLSearchParams(window.location.search);
       const id = params.get("id");
@@ -382,7 +385,7 @@ const RSVPSection = ({ deadline, confirmUrl }: RSVPSectionProps) => {
     };
 
     fetchGuest();
-  }, []);
+  }, [preloadedGuest]);
 
   const openModal = (e: React.MouseEvent) => {
     e.preventDefault();

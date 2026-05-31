@@ -12,25 +12,38 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: "Configuración del servidor incompleta" });
   }
 
-  const response = await fetch(
-    `${supabaseUrl}/rest/v1/guests?id=eq.${encodeURIComponent(id)}&select=name,allowed`,
-    {
-      headers: {
-        apikey: supabaseKey,
-        Authorization: `Bearer ${supabaseKey}`,
-      },
-    }
-  );
+  const headers = {
+    apikey: supabaseKey,
+    Authorization: `Bearer ${supabaseKey}`,
+  };
 
-  if (!response.ok) {
+  // Buscamos al invitado y su confirmación en paralelo
+  const [guestRes, confirmRes] = await Promise.all([
+    fetch(
+      `${supabaseUrl}/rest/v1/guests?id=eq.${encodeURIComponent(id)}&select=name,allowed`,
+      { headers }
+    ),
+    fetch(
+      `${supabaseUrl}/rest/v1/confirmations?guest_id=eq.${encodeURIComponent(id)}&select=attending&limit=1`,
+      { headers }
+    ),
+  ]);
+
+  if (!guestRes.ok) {
     return res.status(500).json({ error: "Error al consultar la base de datos" });
   }
 
-  const data = await response.json();
+  const guests = await guestRes.json();
 
-  if (!data || data.length === 0) {
+  if (!guests || guests.length === 0) {
     return res.status(404).json({ error: "Invitado no encontrado" });
   }
 
-  return res.status(200).json(data[0]);
+  const confirmations = confirmRes.ok ? await confirmRes.json() : [];
+  const confirmed = confirmations.length > 0;
+
+  return res.status(200).json({
+    ...guests[0],
+    confirmed,
+  });
 }
