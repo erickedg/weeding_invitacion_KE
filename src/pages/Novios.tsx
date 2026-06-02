@@ -331,6 +331,13 @@ function ConfirmationsTab({ password }: { password: string }) {
   const attending    = confirmations.filter((c) => c.attending);
   const notAttending = confirmations.filter((c) => !c.attending);
 
+  // Suma de personas reales: usa attendees.length si se capturaron nombres,
+  // si no (SimpleRSVP), usa guest.allowed como estimado.
+  const attendingPeople = attending.reduce(
+    (acc, c) => acc + (c.attendees.length > 0 ? c.attendees.length : c.guest.allowed),
+    0
+  );
+
   const formatDate = (iso: string) =>
     new Date(iso).toLocaleDateString("es-MX", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" });
 
@@ -345,14 +352,21 @@ function ConfirmationsTab({ password }: { password: string }) {
   return (
     <div className="space-y-3">
       {/* Stats rápidas */}
-      <div className="grid grid-cols-2 gap-3 mb-2">
+      <div className="grid grid-cols-3 gap-2 mb-2">
         <div className="bg-white rounded-xl p-4 text-center shadow-sm border border-gray-100">
           <p className="text-2xl font-bold text-green-600">{attending.length}</p>
-          <p className="font-display text-xs tracking-[0.2em] uppercase text-gray-600 font-bold mt-1">Asistirán</p>
+          <p className="font-display text-[10px] tracking-[0.15em] uppercase text-gray-600 font-bold mt-1 leading-tight">Asistirán</p>
+          <p className="text-[9px] text-gray-300 mt-0.5">invitaciones</p>
+        </div>
+        <div className="bg-white rounded-xl p-4 text-center shadow-sm border border-gray-100">
+          <p className="text-2xl font-bold text-wedding-olive">{attendingPeople}</p>
+          <p className="font-display text-[10px] tracking-[0.15em] uppercase text-gray-600 font-bold mt-1 leading-tight">Personas</p>
+          <p className="text-[9px] text-gray-300 mt-0.5">confirmadas</p>
         </div>
         <div className="bg-white rounded-xl p-4 text-center shadow-sm border border-gray-100">
           <p className="text-2xl font-bold text-red-400">{notAttending.length}</p>
-          <p className="font-display text-xs tracking-[0.2em] uppercase text-gray-600 font-bold mt-1">No asistirán</p>
+          <p className="font-display text-[10px] tracking-[0.15em] uppercase text-gray-600 font-bold mt-1 leading-tight">No asisten</p>
+          <p className="text-[9px] text-gray-300 mt-0.5">invitaciones</p>
         </div>
       </div>
 
@@ -434,9 +448,10 @@ function AdminPanel({ password, onLogout }: { password: string; onLogout: () => 
   const handleAdded = (guest: Guest) => setGuests((prev) => [...prev, guest]);
   const handleDelete = (id: string) => setGuests((prev) => prev.filter((g) => g.id !== id));
 
-  const confirmed = guests.filter((g) => g.confirmed && g.attending).length;
-  const declined  = guests.filter((g) => g.confirmed && !g.attending).length;
-  const pending   = guests.filter((g) => !g.confirmed).length;
+  const confirmed    = guests.filter((g) => g.confirmed && g.attending).length;
+  const declined     = guests.filter((g) => g.confirmed && !g.attending).length;
+  const pending      = guests.filter((g) => !g.confirmed).length;
+  const totalAllowed = guests.reduce((acc, g) => acc + g.allowed, 0);
 
   const handleRefresh = () => {
     if (activeTab === "registro") fetchGuests();
@@ -479,17 +494,19 @@ function AdminPanel({ password, onLogout }: { password: string; onLogout: () => 
         </div>
 
         {/* Stats — siempre visibles */}
-        <div className="grid grid-cols-3 gap-2 mb-6">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-6">
           {[
-            { label: "Confirmados", value: confirmed, color: "text-green-600" },
-            { label: "No asisten",  value: declined,  color: "text-red-400"   },
-            { label: "Pendientes",  value: pending,   color: "text-gray-400"  },
+            { label: "Confirmados",        value: confirmed,    color: "text-green-600",            sub: "invitaciones"  },
+            { label: "No asisten",         value: declined,     color: "text-red-400",              sub: "invitaciones"  },
+            { label: "Pendientes",         value: pending,      color: "text-gray-400",             sub: "invitaciones"  },
+            { label: "Total personas",     value: totalAllowed, color: "text-wedding-olive",        sub: "invitadas"     },
           ].map((s) => (
             <div key={s.label} className="bg-white rounded-xl py-3 px-2 text-center shadow-sm border border-gray-100">
               <p className={`text-2xl font-bold ${s.color}`}>{s.value}</p>
               <p className="font-display text-[10px] tracking-[0.1em] uppercase text-gray-500 font-bold mt-1 leading-tight">
                 {s.label}
               </p>
+              <p className="text-[9px] text-gray-300 mt-0.5 font-medium">{s.sub}</p>
             </div>
           ))}
         </div>
@@ -524,7 +541,7 @@ function AdminPanel({ password, onLogout }: { password: string; onLogout: () => 
             {/* Lista de invitados */}
             <div>
               <p className="font-display text-xs tracking-[0.3em] uppercase text-gray-500 font-bold mb-3 px-1">
-                Invitados · {guests.length} en total
+                Invitados · {guests.length} {guests.length === 1 ? "invitación" : "invitaciones"} · {totalAllowed} personas
               </p>
 
               {loading ? (
