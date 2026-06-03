@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Heart, X, Check, Loader2 } from "lucide-react";
+import { Heart, X, Check, Loader2, CheckCircle2 } from "lucide-react";
 import { ScrollReveal } from "../ui/ScrollReveal";
 
 interface GuestInfo {
   id: string;
   name: string;
   allowed: number;
+  confirmed?: boolean;
 }
 
 interface RSVPSectionProps {
@@ -511,25 +512,53 @@ const RSVPSection = ({ deadline, confirmUrl, preloadedGuest }: RSVPSectionProps)
         </ScrollReveal>
 
         <ScrollReveal width="100%" delay={0.3}>
-          <div className="relative inline-block">
+          {guestInfo?.confirmed ? (
             <motion.div
-              className="absolute inset-0 rounded-sm bg-wedding-olive opacity-20"
-              animate={{ scale: [1, 1.2, 1], opacity: [0.5, 0, 0.5] }}
-              transition={{ duration: 2, repeat: Infinity }}
-            />
-            <motion.button
-              onClick={openModal}
-              className="relative z-10 inline-block font-display text-xs tracking-[0.25em] uppercase px-12 py-5 rounded-sm shadow-xl transition-all border-none cursor-pointer"
-              style={{
-                backgroundColor: "hsl(var(--primary))",
-                color: "hsl(var(--primary-foreground))",
-              }}
-              whileHover={{ scale: 1.05, y: -3 }}
-              whileTap={{ scale: 0.95 }}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              className="inline-flex flex-col items-center gap-3"
             >
-              Confirmar aquí
-            </motion.button>
-          </div>
+              <motion.div
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ delay: 0.2, type: "spring", stiffness: 220, damping: 18 }}
+                className="w-14 h-14 rounded-full flex items-center justify-center"
+                style={{ backgroundColor: "hsl(var(--wedding-olive) / 0.12)" }}
+              >
+                <CheckCircle2 size={26} className="text-wedding-olive" strokeWidth={1.5} />
+              </motion.div>
+              <p className="font-display text-[10px] tracking-[0.35em] uppercase text-wedding-olive font-bold">
+                Asistencia confirmada
+              </p>
+              <p className="font-brittany text-3xl" style={{ color: "hsl(var(--wedding-olive-dark))" }}>
+                ¡Nos vemos el 9 de octubre!
+              </p>
+              <p className="wedding-body text-xs text-gray-500 mt-1">
+                Tu lugar ya está reservado. ♡
+              </p>
+            </motion.div>
+          ) : (
+            <div className="relative inline-block">
+              <motion.div
+                className="absolute inset-0 rounded-sm bg-wedding-olive opacity-20"
+                animate={{ scale: [1, 1.2, 1], opacity: [0.5, 0, 0.5] }}
+                transition={{ duration: 2, repeat: Infinity }}
+              />
+              <motion.button
+                onClick={openModal}
+                className="relative z-10 inline-block font-display text-xs tracking-[0.25em] uppercase px-12 py-5 rounded-sm shadow-xl transition-all border-none cursor-pointer"
+                style={{
+                  backgroundColor: "hsl(var(--primary))",
+                  color: "hsl(var(--primary-foreground))",
+                }}
+                whileHover={{ scale: 1.05, y: -3 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                Confirmar aquí
+              </motion.button>
+            </div>
+          )}
         </ScrollReveal>
       </div>
 

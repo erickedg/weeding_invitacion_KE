@@ -97,7 +97,7 @@ const GiftInfo = () => {
               <Baby size={32} strokeWidth={1.5} />
             </motion.div>
 
-            <h3 className="font-display text-3xl font-semibold italic mb-4 text-gray-800">No niños</h3>
+            <h3 className="font-display text-3xl font-light italic mb-4 text-gray-800">No niños</h3>
             <div className="h-px w-12 bg-wedding-olive-light mx-auto mb-6 opacity-40" />
 
             <p className="wedding-body text-sm leading-relaxed text-gray-600 flex-grow">
