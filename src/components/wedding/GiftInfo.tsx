@@ -68,13 +68,13 @@ const GiftInfo = () => {
               </div>
               
               <div className="bg-wedding-cream/50 p-3 rounded-lg">
-                <p className="text-xs uppercase tracking-wider text-wedding-olive-dark/70 mb-1">Número de cuenta</p>
-                <p className="font-mono text-base font-bold text-wedding-olive-dark">1234 5678 9012 3456</p>
+                <p className="text-xs uppercase tracking-wider text-wedding-olive-dark/70 mb-1">Número de tarjeta</p>
+                <p className="font-mono text-base font-bold text-wedding-olive-dark">4152 3143 0668 7263</p>
               </div>
               
               <div className="bg-wedding-cream/50 p-3 rounded-lg">
                 <p className="text-xs uppercase tracking-wider text-wedding-olive-dark/70 mb-1">CLABE</p>
-                <p className="font-mono text-sm font-bold text-wedding-olive-dark">012 345 678901234567</p>
+                <p className="font-mono text-sm font-bold text-wedding-olive-dark">012 180 01596866446 5</p>
               </div>
             </div>
             
@@ -97,7 +97,7 @@ const GiftInfo = () => {
               <Baby size={32} strokeWidth={1.5} />
             </motion.div>
 
-            <h3 className="font-brittany text-3xl mb-4 text-gray-800">No niños</h3>
+            <h3 className="font-display text-3xl font-semibold italic mb-4 text-gray-800">No niños</h3>
             <div className="h-px w-12 bg-wedding-olive-light mx-auto mb-6 opacity-40" />
 
             <p className="wedding-body text-sm leading-relaxed text-gray-600 flex-grow">

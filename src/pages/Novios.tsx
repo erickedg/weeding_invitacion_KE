@@ -419,13 +419,23 @@ function AdminPanel({ password, onLogout }: { password: string; onLogout: () => 
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<"registro" | "confirmaciones">("registro");
   const [refreshKey, setRefreshKey] = useState(0);
+  const [confirmedPeople, setConfirmedPeople] = useState(0);
 
   const fetchGuests = useCallback(async () => {
     setLoading(true);
-    const res = await fetch("/api/admin/guests", {
-      headers: { "x-admin-password": password },
-    });
-    if (res.ok) setGuests(await res.json());
+    const [guestsRes, confirmsRes] = await Promise.all([
+      fetch("/api/admin/guests",         { headers: { "x-admin-password": password } }),
+      fetch("/api/admin/confirmations",  { headers: { "x-admin-password": password } }),
+    ]);
+    if (guestsRes.ok) setGuests(await guestsRes.json());
+    if (confirmsRes.ok) {
+      const confirms: Confirmation[] = await confirmsRes.json();
+      setConfirmedPeople(
+        confirms
+          .filter((c) => c.attending)
+          .reduce((sum, c) => sum + (c.attendees?.length ?? 0), 0)
+      );
+    }
     setLoading(false);
   }, [password]);
 
@@ -434,7 +444,7 @@ function AdminPanel({ password, onLogout }: { password: string; onLogout: () => 
   const handleAdded = (guest: Guest) => setGuests((prev) => [...prev, guest]);
   const handleDelete = (id: string) => setGuests((prev) => prev.filter((g) => g.id !== id));
 
-  const confirmed = guests.filter((g) => g.confirmed && g.attending).length;
+  const totalPeople = guests.reduce((sum, g) => sum + g.allowed, 0);
   const declined  = guests.filter((g) => g.confirmed && !g.attending).length;
   const pending   = guests.filter((g) => !g.confirmed).length;
 
@@ -479,11 +489,12 @@ function AdminPanel({ password, onLogout }: { password: string; onLogout: () => 
         </div>
 
         {/* Stats — siempre visibles */}
-        <div className="grid grid-cols-3 gap-2 mb-6">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-6">
           {[
-            { label: "Confirmados", value: confirmed, color: "text-green-600" },
-            { label: "No asisten",  value: declined,  color: "text-red-400"   },
-            { label: "Pendientes",  value: pending,   color: "text-gray-400"  },
+            { label: "Invitados",   value: totalPeople,   color: "text-wedding-olive-dark" },
+            { label: "Confirmados", value: confirmedPeople, color: "text-green-600"          },
+            { label: "No asisten",  value: declined,       color: "text-red-400"            },
+            { label: "Pendientes",  value: pending,        color: "text-gray-400"           },
           ].map((s) => (
             <div key={s.label} className="bg-white rounded-xl py-3 px-2 text-center shadow-sm border border-gray-100">
               <p className={`text-2xl font-bold ${s.color}`}>{s.value}</p>
