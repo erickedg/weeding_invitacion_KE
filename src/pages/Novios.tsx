@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { Copy, Check, Plus, Trash2, RefreshCw, LogOut, Users, ClipboardList } from "lucide-react";
+import { Copy, Check, Plus, Trash2, RefreshCw, LogOut, Users, ClipboardList, Printer } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 // ─── Tipos ────────────────────────────────────────────────────────────────────
@@ -313,6 +313,95 @@ interface Confirmation {
   guest: { name: string; allowed: number };
 }
 
+const countPeople = (list: Confirmation[]) =>
+  list.filter((c) => c.attending).reduce((sum, c) => sum + (c.attendees?.length > 0 ? c.attendees.length : 1), 0);
+
+const esc = (s: string) =>
+  s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+
+function printChecklist(confirmations: Confirmation[]) {
+  const attending = confirmations.filter((c) => c.attending);
+  const totalPeople = countPeople(confirmations);
+
+  const rows = attending.map((c) => {
+    const guestName = esc(c.guest.name);
+    const people =
+      c.attendees && c.attendees.length > 0
+        ? c.attendees.map((a) => `
+            <tr>
+              <td style="padding:6px 8px; font-size:13px; color:#444;">${esc(a.name)}</td>
+              <td style="padding:6px 8px; text-align:center;">
+                <span style="display:inline-block;width:16px;height:16px;border:1.5px solid #8a9a6a;border-radius:3px;"></span>
+              </td>
+            </tr>`).join("")
+        : `<tr>
+            <td style="padding:6px 8px; font-size:13px; color:#444;">${guestName}</td>
+            <td style="padding:6px 8px; text-align:center;">
+              <span style="display:inline-block;width:16px;height:16px;border:1.5px solid #8a9a6a;border-radius:3px;"></span>
+            </td>
+          </tr>`;
+
+    return `
+      <tr style="background:#f8f6f1;">
+        <td colspan="2" style="padding:8px 8px 4px; font-size:11px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:#5a6a3a;">
+          ${guestName}${c.attendees?.length > 1 ? ` · ${c.attendees.length} personas` : ""}
+        </td>
+      </tr>
+      ${people}
+      <tr><td colspan="2" style="height:4px;"></td></tr>`;
+  }).join("");
+
+  const today = new Date().toLocaleDateString("es-MX", { day: "2-digit", month: "long", year: "numeric" });
+
+  const html = `<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Lista de confirmados · Katia &amp; Erick</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap');
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family: 'Cormorant Garamond', Georgia, serif; background:#fff; color:#333; padding:32px 40px; }
+    .header { text-align:center; margin-bottom:28px; border-bottom:1px solid #d4c9a8; padding-bottom:20px; }
+    .header h1 { font-size:32px; font-weight:400; color:#3d4a2a; letter-spacing:0.02em; }
+    .header p { font-size:11px; letter-spacing:0.25em; text-transform:uppercase; color:#888; margin-top:4px; }
+    .meta { display:flex; justify-content:space-between; font-size:11px; color:#888; letter-spacing:0.15em; text-transform:uppercase; margin-bottom:20px; }
+    table { width:100%; border-collapse:collapse; }
+    th { font-size:10px; letter-spacing:0.25em; text-transform:uppercase; color:#888; padding:6px 8px; border-bottom:1px solid #e5dcc8; text-align:left; }
+    th:last-child { text-align:center; width:60px; }
+    tr + tr { border-top:1px solid #f0ebe0; }
+    @media print { body { padding:20px 28px; } }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <p>09 · 10 · 2026</p>
+    <h1>Katia &amp; Erick</h1>
+    <p style="margin-top:8px;">Lista de confirmados · ${totalPeople} personas</p>
+  </div>
+  <div class="meta">
+    <span>Wedding planner checklist</span>
+    <span>${today}</span>
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>&#10003;</th>
+      </tr>
+    </thead>
+    <tbody>${rows}</tbody>
+  </table>
+  <script>window.onload = function() { window.print(); }<\/script>
+</body>
+</html>`;
+
+  const blob = new Blob([html], { type: "text/html;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const w = window.open(url, "_blank");
+  if (w) setTimeout(() => URL.revokeObjectURL(url), 10_000);
+}
+
 function ConfirmationsTab({ password }: { password: string }) {
   const [confirmations, setConfirmations] = useState<Confirmation[]>([]);
   const [loading, setLoading] = useState(true);
@@ -330,6 +419,7 @@ function ConfirmationsTab({ password }: { password: string }) {
 
   const attending    = confirmations.filter((c) => c.attending);
   const notAttending = confirmations.filter((c) => !c.attending);
+  const totalPeople  = countPeople(confirmations);
 
   const formatDate = (iso: string) =>
     new Date(iso).toLocaleDateString("es-MX", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" });
@@ -344,16 +434,29 @@ function ConfirmationsTab({ password }: { password: string }) {
 
   return (
     <div className="space-y-3">
-      {/* Stats rápidas */}
-      <div className="grid grid-cols-2 gap-3 mb-2">
-        <div className="bg-white rounded-xl p-4 text-center shadow-sm border border-gray-100">
-          <p className="text-2xl font-bold text-green-600">{attending.length}</p>
-          <p className="font-display text-xs tracking-[0.2em] uppercase text-gray-600 font-bold mt-1">Asistirán</p>
+      {/* Stats + botón imprimir */}
+      <div className="flex items-center gap-3 mb-2">
+        <div className="flex-1 grid grid-cols-2 gap-3">
+          <div className="bg-white rounded-xl p-4 text-center shadow-sm border border-gray-100">
+            <p className="text-2xl font-bold text-green-600">{totalPeople}</p>
+            <p className="font-display text-[10px] tracking-[0.2em] uppercase text-gray-600 font-bold mt-1">Personas</p>
+          </div>
+          <div className="bg-white rounded-xl p-4 text-center shadow-sm border border-gray-100">
+            <p className="text-2xl font-bold text-red-400">{notAttending.length}</p>
+            <p className="font-display text-[10px] tracking-[0.2em] uppercase text-gray-600 font-bold mt-1">No asisten</p>
+          </div>
         </div>
-        <div className="bg-white rounded-xl p-4 text-center shadow-sm border border-gray-100">
-          <p className="text-2xl font-bold text-red-400">{notAttending.length}</p>
-          <p className="font-display text-xs tracking-[0.2em] uppercase text-gray-600 font-bold mt-1">No asistirán</p>
-        </div>
+        {attending.length > 0 && (
+          <button
+            onClick={() => printChecklist(confirmations)}
+            title="Imprimir lista para wedding planner"
+            className="flex flex-col items-center gap-1 bg-white rounded-xl px-4 py-3 shadow-sm border border-gray-100 cursor-pointer hover:border-wedding-olive/40 transition-colors"
+            style={{ color: "hsl(var(--wedding-olive))" }}
+          >
+            <Printer size={20} />
+            <span className="font-display text-[9px] tracking-[0.15em] uppercase font-bold text-gray-500 whitespace-nowrap">Imprimir</span>
+          </button>
+        )}
       </div>
 
       {/* Lista */}
@@ -433,7 +536,7 @@ function AdminPanel({ password, onLogout }: { password: string; onLogout: () => 
       setConfirmedPeople(
         confirms
           .filter((c) => c.attending)
-          .reduce((sum, c) => sum + (c.attendees?.length ?? 0), 0)
+          .reduce((sum, c) => sum + (c.attendees?.length > 0 ? c.attendees.length : 1), 0)
       );
     }
     setLoading(false);
