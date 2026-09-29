@@ -75,7 +75,7 @@ const WEDDING_CONFIG = {
   dateFormatted: "09 · 10 · 2026",
   ceremony: {
     title: "Ceremonia",
-    time: "4:30 PM",
+    time: "4:00 PM",
     venue: "Iglesia (Parroquia El Señor de la Misericordia - Capilla)",
     mapUrl: "https://maps.app.goo.gl/DoFad2Vt6b7A1vm87",
   },
@@ -86,8 +86,8 @@ const WEDDING_CONFIG = {
     mapUrl: "https://maps.app.goo.gl/Mn8qtibT4AVPoWmn9",
   },
   itinerary: [
-    { time: "4:30 p.m.", event: "Ceremonia religiosa", icon: "💒" },
-    { time: "6:30 p.m.", event: "Sesión de fotos familiar", icon: "📸" },
+    { time: "4:00 p.m.", event: "Ceremonia religiosa", icon: "💒" },
+    { time: "5:30 p.m.", event: "Sesión de fotos familiar", icon: "📸" },
     { time: "7:30 p.m.", event: "Recepción de invitados", icon: "🥂" },
     { time: "8:00 p.m.", event: "Cena", icon: "🍽️" },
     { time: "9:00 p.m.", event: "Baile y celebración", icon: "💃" },

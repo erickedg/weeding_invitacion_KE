@@ -320,35 +320,40 @@ const esc = (s: string) =>
   s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 
 function printChecklist(confirmations: Confirmation[]) {
-  const attending = confirmations.filter((c) => c.attending);
+  const sortKey = (c: Confirmation) =>
+    c.attendees?.length === 1 ? c.attendees[0].name : c.guest.name;
+  const attending = confirmations
+    .filter((c) => c.attending)
+    .sort((a, b) => sortKey(a).localeCompare(sortKey(b), "es", { sensitivity: "base" }));
   const totalPeople = countPeople(confirmations);
 
+  const checkbox = `<span style="display:inline-block;width:16px;height:16px;border:1.5px solid #8a9a6a;border-radius:3px;"></span>`;
+
   const rows = attending.map((c) => {
-    const guestName = esc(c.guest.name);
-    const people =
+    const names =
       c.attendees && c.attendees.length > 0
-        ? c.attendees.map((a) => `
-            <tr>
-              <td style="padding:6px 8px; font-size:13px; color:#444;">${esc(a.name)}</td>
-              <td style="padding:6px 8px; text-align:center;">
-                <span style="display:inline-block;width:16px;height:16px;border:1.5px solid #8a9a6a;border-radius:3px;"></span>
-              </td>
-            </tr>`).join("")
-        : `<tr>
-            <td style="padding:6px 8px; font-size:13px; color:#444;">${guestName}</td>
-            <td style="padding:6px 8px; text-align:center;">
-              <span style="display:inline-block;width:16px;height:16px;border:1.5px solid #8a9a6a;border-radius:3px;"></span>
-            </td>
-          </tr>`;
+        ? c.attendees.map((a) => a.name)
+        : [c.guest.name];
+
+    const personRows = names.map((n) => `
+      <tr>
+        <td style="padding:6px 8px; font-size:13px; color:#444;">${esc(n)}</td>
+        <td style="padding:6px 8px; text-align:center;">${checkbox}</td>
+      </tr>`).join("");
+
+    // Individual: el encabezado solo indica "1 persona"; en grupo lleva el nombre de la invitación
+    const title = names.length === 1
+      ? "1 persona"
+      : `${esc(c.guest.name)} · ${names.length} personas`;
 
     return `
       <tr style="background:#f8f6f1;">
         <td colspan="2" style="padding:8px 8px 4px; font-size:11px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:#5a6a3a;">
-          ${guestName}${c.attendees?.length > 1 ? ` · ${c.attendees.length} personas` : ""}
+          ${title}
         </td>
       </tr>
-      ${people}
-      <tr><td colspan="2" style="height:4px;"></td></tr>`;
+      ${personRows}
+      <tr><td colspan="2" style="height:12px;"></td></tr>`;
   }).join("");
 
   const today = new Date().toLocaleDateString("es-MX", { day: "2-digit", month: "long", year: "numeric" });
